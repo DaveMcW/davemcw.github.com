@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cs360.campsitelocator">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <application
+        android:name=".GlobalVariables"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".LoginActivity"
+            android:label="@string/login"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".SearchActivity"
+            android:label="@string/search_campsites"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".CampsiteEditorActivity"
+            android:label="@string/add_new_campsite"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".CreateAccountActivity"
+            android:label="@string/create_new_account"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".AboutActivity"
+            android:label="@string/about_the_app"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".CampsiteViewActivity"
+            android:label="@string/campsite"
+            android:parentActivityName=".CampsiteListActivity"/>
+        <activity android:name=".CampsiteListActivity"
+            android:label="@string/campsite_list"
+            android:parentActivityName=".SearchActivity"/>
+        <activity android:name=".MapsActivity"
+            android:label="@string/campsite_location"
+            android:parentActivityName=".CampsiteEditorActivity"/>
+
+        <service
+            android:name=".LocationUpdatesService"
+            android:enabled="true"
+            android:foregroundServiceType="location"/>
+
+</application>
+
+</manifest>

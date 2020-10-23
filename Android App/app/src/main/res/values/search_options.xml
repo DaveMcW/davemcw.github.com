@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="search_options">
+        <item>Search by Campsite Name</item>
+        <item>Search by City</item>
+        <item>Search by Feature</item>
+        <item>Search near Me</item>
+        <item>Search near Location</item>
+        <item>Show all campsites</item>
+    </string-array>
+</resources>

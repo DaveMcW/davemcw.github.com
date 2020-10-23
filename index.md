@@ -1,12 +1,10 @@
-### Table of Contents
-
 - [Professional Self-Assessment](index.md)
 - [Code Review](code_review.md)
 - [Databases](databases.md)
 - [Algorithms and Data Structures](algorithms_and_data_structures.md)
 - [Design and Engineering](design_and_engineering.md)
 
-# Professional Self-Assessment
+# Professional Self-Assessment #
 For your e-portfolio you will write a professional self-assessment. In it, you will reflect on the capstone and your
 experience in the Computer Science program as a whole. Your professional self-assessment will serve as the formal introduction to your portfolio. You
 will add it to the beginning of your portfolio for your final submission in Module Seven.

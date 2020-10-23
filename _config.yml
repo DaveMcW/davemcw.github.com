@@ -1,3 +1,14 @@
 theme: jekyll-theme-slate
 title: David McWilliams' Homepage
 description: Updates coming soon!
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - index.md
+  - code_review.md
+  - databases.md
+  - algorithms_and_data_structures.md
+  - design_and_engineering.md

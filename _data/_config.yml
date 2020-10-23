@@ -1,14 +1,2 @@
 theme: jekyll-theme-slate
 title: David McWilliams' Homepage
-description: Updates coming soon!
-navigation:
-  - title: Home
-    url: /
-  - title: Code Review
-    url: code_review.md
-  - title: Databases
-    url: databases.md
-  - title: Algorithms and Data Structures
-    url: algorithms_and_data_structures.md
-  - title: Design and Engineering
-    url: design_and_engineering.md

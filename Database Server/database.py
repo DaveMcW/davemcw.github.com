@@ -1,11 +1,11 @@
 #!/usr/bin/python
 """
-CS 340 Final Project - RESTful API
+CS 499 Final Project - RESTful API
 Author: David McWilliams
-Date: June 22, 2020
+Date: October, 2020
 """
 
-import hashlib
+import bcrypt
 import json
 import re
 import secrets
@@ -20,12 +20,6 @@ db_user = "cs499"
 db_password = "cs499"
 db_connection = MongoClient(f"mongodb://{db_user}:{db_password}@{db_host}/{db_name}")
 db = db_connection[db_name]
-
-
-def password_hash(password):
-    """ Hash the password """
-    # TODO: Use a salt and a stronger hash
-    return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
 
 def check_login():
@@ -83,43 +77,39 @@ def campsite_search_result(pipeline):
 @route('/login', method='POST')
 def login():
     """ Authenticate a user and grant an access token """
+    user_id = ""
+    password = ""
+    hashed = ""
     try:
         # Validate fields
-        assert isinstance(request.json['username'], str)
-        assert isinstance(request.json['password'], str)
+        username = request.json.get('username')
+        assert isinstance(username, str)
+        password = request.json.get('password')
+        assert isinstance(password, str)
 
-        # Hash password
-        hash = password_hash(request.json['password'])
+        password = password.encode('utf-8')
 
         # Read from database
-        filters = {'name': request.json['username'], 'password': hash}
-        projection = {'_id': 1}
+        filters = {'name': username}
+        projection = {'password': 1}
         result = db.user.find_one(filters, projection)
-
-        if result is None:
-            abort(401, "Invalid username or password.")
-
-        # Create access token
+        hashed = result['password']
         user_id = result['_id']
-        token = secrets.token_hex()
-        db.user.update_one({'_id': user_id}, {"$set": {'token': token}})
-
-        # Return access token
-        output = {'token': f"{str(user_id)}-{token}"}
-        return json.dumps(output)
 
     except Exception as e:
         abort(500, "Error:" + str(e))
 
+    # Check password
+    if not bcrypt.checkpw(password, hashed):
+        abort(401, "Invalid username or password.")
 
-@route('/user-exists/<username>', method='GET')
-def user_exits(username):
     try:
-        # Validate fields
-        assert isinstance(username, str)
+        # Create access token
+        token = secrets.token_hex()
+        db.user.update_one({'_id': user_id}, {"$set": {'token': token}})
 
-        # Return result
-        output = {'result': user_exists(username)}
+        # Return id and access token
+        output = {'id': str(user_id), 'token': f"{str(user_id)}-{token}"}
         return json.dumps(output)
 
     except Exception as e:
@@ -131,23 +121,36 @@ def create_user():
     """ Create a new user """
     try:
         # Validate fields
-        assert isinstance(request.json['username'], str)
-        assert not user_exists(request.json['username'])
-        assert isinstance(request.json['password'], str)
+        if not request.json.get('username'):
+            output = {'error': "Username is required."}
+            return json.dumps(output)
+        if user_exists(request.json.get('username')):
+            output = {'error': "An account with that username already exists."}
+            return json.dumps(output)
+        if not request.json.get('password'):
+            output = {'error': "Password is required."}
+            return json.dumps(output)
 
-        # Hash password
-        hash = password_hash(request.json['password'])
+        # Hash the password using a salt
+        password = request.json.get('password').encode('utf-8')
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password, salt)
 
         # Insert into database
         new_user = {
-            'name': request.json['username'],
-            'password': hash,
-            'app_rating': -1,
+            'name': request.json.get('username'),
+            'password': hashed,
         }
         result = db.user.insert_one(new_user)
+        user_id = result.inserted_id
+
+        # Add a sample favorite campsite
+        changes = {'$set': {'favorite': 1}}
+        filters = {'user_id': user_id, 'campsite_id': objectid.ObjectId("5f7147f0b52c31ce37f0e687")}
+        db.user_campsite.update_one(filters, changes, upsert=True)
 
         # Return user id
-        output = {'id': str(result.inserted_id)}
+        output = {'id': str(user_id)}
         return json.dumps(output)
 
     except Exception as e:
@@ -161,20 +164,17 @@ def create_campsite():
 
     try:
         # Validate fields
-        assert isinstance(request.json.name, str)
-        assert isinstance(request.json.location, str)
-        assert isinstance(request.json.lat, str)
-        assert isinstance(request.json.long, str)
-        assert isinstance(request.json.features, str)
-        assert isinstance(request.json.twitter, str)
+        assert isinstance(request.json['name'], str)
+        assert isinstance(request.json['location'], str)
+        assert isinstance(request.json['features'], str)
+        assert isinstance(request.json['twitter'], str)
 
         # Insert into database
         new_site = {
-            'name': request.json.name,
-            'location': request.json.location,
-            'geo': {'type': "Point", 'coordinates': [request.json.lat, request.json.long]},
-            'features': request.json.features,
-            'twitter': request.json.twitter,
+            'name': request.json['name'],
+            'location': request.json['location'],
+            'features': request.json['features'],
+            'twitter': request.json['twitter'],
         }
         result = db.campsite.insert_one(new_site)
 
@@ -196,21 +196,30 @@ def get_campsite(campsite_id):
         campsite_id = objectid.ObjectId(campsite_id)
         result = db.campsite.find_one({'_id': campsite_id})
 
-        # Check if it is a favorite
-        filters = {'user_id': user_id, 'campsite_id': campsite_id, 'favorite': 1}
-        projection = {'_id': 1}
-        favorite = db.user_campsite.find_one(filters, projection) is not None
+        # Check user's rating and favorite
+        rating = -1
+        favorite = 0
+        filters = {'user_id': user_id, 'campsite_id': campsite_id}
+        projection = {'_id': 0, 'rating': 1, 'favorite': 1}
+        user_result = db.user_campsite.find_one(filters, projection)
+        if user_result is not None:
+            rating = user_result.get("rating")
+            if not rating:
+                rating = -1
+            favorite = int(bool(user_result.get("favorite")))
 
         # Return campsite details
         output = {
-            'id': str(campsite_id),
-            'name': result.name,
-            'location': result.location,
-            'lat': result.geo.coordinates[0],
-            'long': result.geo.coordinates[1],
-            'features': request.json.features,
-            'twitter': request.json.twitter,
+            'id': str(result['_id']),
+            'name': result['name'],
+            'location': result['location'],
+            'lat': result['geo']['coordinates'][1],
+            'long': result['geo']['coordinates'][0],
+            'features': result['features'],
+            'twitter': result['twitter'],
             'favorite': favorite,
+            'rating': rating,
+            'average_rating': result['average_rating'],
         }
         return json.dumps(output)
 
@@ -226,25 +235,26 @@ def update_campsite(campsite_id):
     try:
         # Validate fields
         changes = {}
-        if request.json.name:
-            assert isinstance(request.json.name, str)
-            changes['name'] = request.json.name
-        if request.json.location:
-            assert isinstance(request.json.location, str)
-            changes['location'] = request.json.location
-        if request.json.lat or request.json.long:
-            assert isinstance(request.json.lat, str)
-            assert isinstance(request.json.long, str)
-            changes['geo'] = {'type': "Point", 'coordinates': [request.json.lat, request.json.long]},
-        if request.json.features:
-            assert isinstance(request.json.features, str)
-            changes['features'] = request.json.features
-        if request.json.twitter:
-            assert isinstance(request.json.twitter, str)
-            changes['twitter'] = request.json.twitter
+        if request.json.get('name'):
+            assert isinstance(request.json['name'], str)
+            changes['name'] = request.json['name']
+        if request.json.get('location'):
+            assert isinstance(request.json['location'], str)
+            changes['location'] = request.json['location']
+        if request.json.get('lat') or request.json.get('long'):
+            assert isinstance(request.json['lat'], (int, float))
+            assert isinstance(request.json['long'], (int, float))
+            changes['geo'] = {'type': "Point", 'coordinates': [request.json['long'], request.json['lat']]},
+        if request.json.get('features'):
+            assert isinstance(request.json['features'], str)
+            changes['features'] = request.json['features']
+        if request.json.get('twitter'):
+            assert isinstance(request.json['twitter'], str)
+            changes['twitter'] = request.json['twitter']
 
         # Update database
-        db.campsite.update_one({'_id': objectid.ObjectId(campsite_id)}, {"$set": changes})
+        filters = {'_id': objectid.ObjectId(campsite_id)}
+        db.campsite.update_one(filters, {"$set": changes})
 
         # Return campsite id
         output = {'id': campsite_id}
@@ -373,15 +383,49 @@ def search_campsite_favorite():
         abort(500, "Error:" + str(e))
 
 
-@route('/set-favorite/<campsite_id>/<favorite>', method='PUT')
+@route('/search-campsite-near/<lat>/<long>/<distance>', method='GET')
+def search_campsite_near(lat, long, distance):
+    """ Search for campsites by name """
+    check_login()
+
+    try:
+        # Do search
+        point = {'type': "Point", 'coordinates': [float(long), float(lat)]}
+        pipeline = [
+            {'$geoNear': {
+                'key': 'geo',
+                'near': point,
+                'maxDistance': float(distance),
+                'distanceField': 'distance',
+                'spherical': True,
+            }},
+            {'$sort': {'distance': 1}},
+            {'$project': {'name': 1, 'distance': 1}},
+        ]
+
+        # Return id and name for each campsite found
+        output = []
+        for item in db.campsite.aggregate(pipeline):
+            # Convert from meters to miles
+            distance = item['distance'] / 1609.344
+            if distance > 9.9:
+                distance = f"{distance:.0f}"
+            else:
+                distance = f"{distance:.1f}"
+            name = f"{distance} mi. {item['name']}"
+            output.append({'id': str(item['_id']), 'name': name})
+        return json.dumps(output)
+
+    except Exception as e:
+        abort(500, "Error:" + str(e))
+
+
+@route('/set-campsite-favorite/<campsite_id>/<favorite>', method='PUT')
 def set_favorite(campsite_id, favorite):
     """ Set a campsite as a favorite """
     user_id = check_login()
 
     try:
-        # Validate fields
-        assert isinstance(favorite, str)
-
         # Set or unset favorite
         if int(favorite) == 0:
             changes = {'$unset': {'favorite': 0}}
@@ -392,9 +436,55 @@ def set_favorite(campsite_id, favorite):
         filters = {'user_id': user_id, 'campsite_id': objectid.ObjectId(campsite_id)}
         db.user_campsite.update_one(filters, changes, upsert=True)
 
+        # Return empty object
+        return json.dumps({})
+
+    except Exception as e:
+        abort(500, "Error:" + str(e))
+
+
+@route('/set-campsite-rating/<campsite_id>/<rating>', method='PUT')
+def set_campsite_rating(campsite_id, rating):
+    """ Set a campsite as a favorite """
+    user_id = check_login()
+
+    try:
+        # Validate fields
+        rating = int(rating)
+        assert rating >= 0
+        assert rating <= 5
+        campsite_id = objectid.ObjectId(campsite_id)
+
+        # Update database
+        changes = {'$set': {'rating': rating}}
+        filters = {'user_id': user_id, 'campsite_id': campsite_id}
+        db.user_campsite.update_one(filters, changes, upsert=True)
+
+        # Recalculate average for that campsite
+        pipeline = [
+            {'$match': {'campsite_id': campsite_id, 'rating': {'$exists': 'true'}}},
+            {'$group': {'_id': '$campsite_id', 'sum': {'$sum': "$rating"}, 'total': {'$sum': 1}}},
+            {'$project': {'sum': 1, 'total': 1}}
+        ]
+        cursor = db.user_campsite.aggregate(pipeline)
+        result = list(cursor)[0]
+        if result['total'] == 0:
+            average_rating = -1
+        else:
+            average_rating = result['sum'] / result['total']
+
+        # Update database
+        changes = {'$set': {'average_rating': average_rating}}
+        filters = {'_id': campsite_id}
+        db.campsite.update_one(filters, changes)
+
+        # Return new average rating
+        output = {'average_rating': average_rating}
+        return json.dumps(output)
+
     except Exception as e:
         abort(500, "Error:" + str(e))
 
 
 if __name__ == '__main__':
-    run(host='localhost', port=8080)
+    run(host='davemcw.com', port=8080, debug=False)

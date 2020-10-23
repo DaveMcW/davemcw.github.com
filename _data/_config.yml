@@ -1,11 +1,6 @@
 theme: jekyll-theme-slate
 title: David McWilliams' Homepage
 description: Updates coming soon!
-plugins:
-  - jekyll-relative-links
-relative_links:
-  enabled: true
-  collections: true
 navigation:
   - title: Home
     url: /

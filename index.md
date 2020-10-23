@@ -1,6 +1,6 @@
 # Hello World! #
 
-- [Professional Self-Assessment](#Professional Self-Assessment)
+- [Professional Self-Assessment](#professional-self-assessment)
 - [Code Review](code_review.md)
 - [Databases](databases.md)
 - [Algorithms and Data Structures](algorithms_and_data_structures.md)

@@ -1,4 +1,4 @@
-### Table of contents ###
+### Table of Contents ###
 
 - [Professional Self-Assessment](index.md)
 - [Code Review](code_review.md)

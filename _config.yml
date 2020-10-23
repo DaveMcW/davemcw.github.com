@@ -6,9 +6,14 @@ plugins:
 relative_links:
   enabled: true
   collections: true
-include:
-  - index.md
-  - code_review.md
-  - databases.md
-  - algorithms_and_data_structures.md
-  - design_and_engineering.md
+navigation:
+  - title: Home
+    url: /
+  - title: Code Review
+    url: code_review.md
+  - title: Databases
+    url: databases.md
+  - title: Algorithms and Data Structures
+    url: algorithms_and_data_structures.md
+  - title: Design and Engineering
+    url: design_and_engineering.md

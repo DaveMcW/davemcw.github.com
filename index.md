@@ -27,3 +27,5 @@ The portfolio has four parts:
 - [Database Enhancement](databases.html): Describes how I ported the database from SQLite to MongoDB.
 - [Algorithms and Data Structures Enhancement](algorithms_and_data_structures.html): Describes how I improved the security of the password hashing algorithm, and improved the efficiency of the location search.
 - [Software Design and Engineering Enhancement](design_and_engineering.html): Describes how I upgraded the app to make remote API calls to the database, instead of local calls.
+
+Continue to [Databases Enhancement](/databaes.html).

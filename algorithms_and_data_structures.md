@@ -15,8 +15,11 @@ Hackers are constantly looking for ways to break into applications, so it is imp
 
 #### References ####
 Bodnar, J. (2020). Python bcrypt tutorial. Retrieved from http://zetcode.com/python/bcrypt/
+
 MongoDB. (2013). New Geo Features in MongoDB 2.4. Retrieved from https://www.mongodb.com/blog/post/new-geo-features-in-mongodb-24
+
 Naiakshina, A., Danilova, A., Tiefenau, C., Herzog, M., Dechand, S., & Smith, M. (2017). Why Do Developers Get Password Storage Wrong? A Qualitative Usability Study. https://doi-org.ezproxy.snhu.edu/10.1145/3133956.3134082
+
 Schneier B. (1994). Fast Software Encryption, Cambridge Security Workshop Proceedings (December 1993), Springer-Verlag, 1994, pp. 191-204. Retrieved from https://www.schneier.com/academic/archives/1994/09/description_of_a_new.html
 
 Continue to [Software Design and Engineering Enhancement](/design_and_engineering.html).

@@ -1,4 +1,4 @@
-{% include navigation.md %}
+{% include navigation.html %}
 ## Professional Self-Assessment ##
 
 For your e-portfolio you will write a professional self-assessment. In it, you will reflect on the capstone and your

@@ -1,2 +1,2 @@
-{% include navigation.md %}
+{% include navigation.html %}
 ## Enhancement 1: Databases ##

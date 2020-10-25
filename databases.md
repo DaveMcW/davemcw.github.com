@@ -11,8 +11,6 @@ MongoDB requires indexes to be created to make searching more efficient. I creat
 
 Most database operations require a valid user account. I implemented authentication security using the HTTP Authorization header. The API user is required to post their username and password to the /login endoint, and the server returns a secret token. Then the user passes the token in the HTTP Authorization header when performing secure operations. If a valid token is not detected, the server replies with a 403 Forbidden error. You can view the authorization check in the function [check_login()](https://github.com/DaveMcW/davemcw.github.io/blob/master/Database%20Server/database.py#L25). This demonstrates my ability use best practices in developing a security mindset.
 
-### Reflection ###
-
 This was my first time working with a secure MongoDB database, so I learned how to set up user permissions and grant the least privileges needed. I also learned the best practices to connect to a secure MongoDB database, using the connection string URI (MongoDB, n.d.).
 
 A challenge I faced was that MongoDB does not support multiple fulltext indexes on a collection. My solution was to use the fulltext index on the most important search field, name. The location and features searches use slower regular expression search.

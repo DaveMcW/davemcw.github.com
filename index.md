@@ -5,7 +5,7 @@ My coursework at SNHU has helped me develop diverse skills in the field of compu
 - C (CS-405, CS-410)
 - C++ (CS-260, CS-330, CS-405)
 - Java (IT-145, IT-365, CS-250, CS-320, CS-360)
-- OpenGL (CS-330)
+- OpenGL (CS-330, [code sample](https://github.com/DaveMcW/davemcw.github.io/tree/master/OpenGL%20Chair))
 - Python (MAT 243, CS-200, CS-350)
 - SQL (DAD-220)
 - x86 Assembly (CS-410)

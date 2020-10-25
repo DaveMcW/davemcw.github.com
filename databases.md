@@ -1,7 +1,7 @@
 {% include navigation.html %}
 ## Databases Enhancement ##
 
-I enhanced the database by porting it from a local SQLite database to a remote MongoDB database. I started by creating a UML model of the database, to ensure I captured all the storage requirements. This demonstrates my ability to convey ideas through visual communication.
+My database started as a local SQLite database in my CS-360 final project. I enhanced the database by porting it to a remote MongoDB server. I started by creating a UML model of the database, to ensure I captured all the storage requirements. This demonstrates my ability to convey ideas through visual communication.
 
 ![UML model](campsite_user.png)
 

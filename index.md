@@ -18,10 +18,12 @@ I know the benefits and complexity of data structures such as array, linked list
 
 I have experience using UML to analyze and design software systems (IT-315). I have experience with several types of databases, including MySQL (DAD-220), SQLite (CS-360), and MongoDB (CS-340).
 
+I have experience identifying common security vulnerabilities such as buffer overflows, memory leaks, SQL injection, and uninitialized variables (CS 405). I practice defensive programming by validating all user generated input, and sanitizing all user generated output.
+
 My portfolio is based on two artifacts. The first is my CS-360 final project, a standalone campsite locator Android app. The second is my CS-340 final project, a RESTful API written in Python with a MongoDB backend. In CS-499 I merged these two together, to create a web enabled mobile app for locating campsites. Because it uses an online database, users can collaborate to add new campsites and review them. This shows how I can use my computer science skills to add value both to individual users and also to a group of users, such as a company.
 
 The portfolio has four parts:
-[Code Review](code_review.html): A video demo of the two artifacts, and a look at their source code. I also discuss my specific plans to enhance them.
-[Database Enhancement](algorithms_and_data_structures.html): Describes how I ported the database from SQLite to MongoDB.
-[Algorithms and Data Structures Enhancement](algorithms_and_data_structures.html): Describes how I improved the security of the password hashing algorithm, and the efficiency of the location search.
-[Software Design and Engineering Enhancement](design_and_engineering.html): Describes how I upgraded the app to make remote API calls to the database, instead of local calls.
+-[Code Review](code_review.html): A video demo of the two artifacts, and a look at their source code. I also discuss my specific plans to enhance them.
+-[Database Enhancement](algorithms_and_data_structures.html): Describes how I ported the database from SQLite to MongoDB.
+-[Algorithms and Data Structures Enhancement](algorithms_and_data_structures.html): Describes how I improved the security of the password hashing algorithm, and the efficiency of the location search.
+-[Software Design and Engineering Enhancement](design_and_engineering.html): Describes how I upgraded the app to make remote API calls to the database, instead of local calls.

@@ -24,6 +24,6 @@ My portfolio is based on two artifacts. The first is my [CS-360 final project](h
 
 The portfolio has four parts:
 - [Code Review](code_review.html): A video demo of the two artifacts, and a look at their source code. I also discuss my specific plans to enhance them.
-- [Database Enhancement](algorithms_and_data_structures.html): Describes how I ported the database from SQLite to MongoDB.
+- [Database Enhancement](databases.html): Describes how I ported the database from SQLite to MongoDB.
 - [Algorithms and Data Structures Enhancement](algorithms_and_data_structures.html): Describes how I improved the security of the password hashing algorithm, and improved the efficiency of the location search.
 - [Software Design and Engineering Enhancement](design_and_engineering.html): Describes how I upgraded the app to make remote API calls to the database, instead of local calls.

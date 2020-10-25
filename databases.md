@@ -18,6 +18,7 @@ This was my first time working with a secure MongoDB database, so I learned how 
 A challenge I faced was that MongoDB does not support multiple fulltext indexes on a collection. My solution was to use the fulltext index on the most important search field, name. The location and features searches use slower regular expression search.
 
 ### Reference ###
+
 MongoDB. (n.d.). Connection String URI Format. Retrieved from https://docs.mongodb.com/manual/reference/connection-string/
 
 Continue to [Algorithms and Data Structures Enhancement](/algorithms_and_data_structures.html).

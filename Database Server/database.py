@@ -385,7 +385,7 @@ def search_campsite_favorite():
 
 @route('/search-campsite-near/<lat>/<long>/<distance>', method='GET')
 def search_campsite_near(lat, long, distance):
-    """ Search for campsites by name """
+    """ Search for campsites near location """
     check_login()
 
     try:

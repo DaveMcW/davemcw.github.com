@@ -7,7 +7,7 @@ I enhanced the artifact by moving the database to a remote server. This allows u
 
 ![client server diagram](client_server.png)
 
-I had already set up the remote database in the [Database Enhancement](databases.html). So the main software design and engineering challenge is how to communicate with the remote database. I decided on the Volley library. Volley is a HTTP library that makes networking for Android apps easier and most importantly, faster (Google Developers, 2020). Here is a [code example](https://github.com/DaveMcW/davemcw.github.io/blob/master/Android App/app/src/main/java/com/cs360/campsitelocator/CampsiteListActivity.java#L121) of one of my remote API calls using Volley. This demonstrates my ability to create industry-standard software designs.
+I had already set up the remote database in the [Database Enhancement](databases.html). So the main software design and engineering challenge is how to communicate with the remote database. I decided on the Volley library. Volley is a HTTP library that makes networking for Android apps easier and most importantly, faster (Google Developers, n.d.). Here is a [code example](https://github.com/DaveMcW/davemcw.github.io/blob/master/Android App/app/src/main/java/com/cs360/campsitelocator/CampsiteListActivity.java#L121) of one of my remote API calls using Volley. This demonstrates my ability to create industry-standard software designs.
 
 The next challenge was dealing with failed API calls. For most of failures, the app simply displays an error message and does nothing. However, an "403 Forbidden" failure is special, since it means the user must log in again. My solution was to write a [custom ConnectionErrorHandler class](https://github.com/DaveMcW/davemcw.github.io/blob/master/Android App/app/src/main/java/com/cs360/campsitelocator/ConnectionErrorHandler.java#L48), which clears the user's login data and returns them to the main menu, no matter where in the app they currently are.
 
@@ -24,5 +24,9 @@ The final Android app package is available here:[campsite-locator.apk](https://g
 Despite spending two 8-week semesters working on this Android app, there are many features that I have not had time to implement. For example images are still stored locally instead of in the remove database. There is very little automated testing. I estimate that adding full test coverage would double the time it took me to build the app. This helps me appreciate the large scope of a mobile application project.
 
 I am proud to have delivered a functioning a mobile app integrated with a remote database, within my 8 week course deadline. This demonstrates my ability to deliver value to stakeholders, in the context of Agile development.
+
+#### Reference ####
+
+Google Developers. (n.d.). Volley overview. Retrieved from https://developer.android.com/training/volley
 
 Return to [Professional Self-Assessment](/).

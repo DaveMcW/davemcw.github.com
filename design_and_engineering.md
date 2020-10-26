@@ -17,7 +17,7 @@ Finally, the Google Maps API used in the app could only accept a text location a
 
 ![marker on map](map.png)
 
-The final Android app package is available here:[campsite-locator.apk](https://github.com/DaveMcW/davemcw.github.io/releases/download/1.0/campsite-locator.apk)
+The final Android app package is available here: [campsite-locator.apk](https://github.com/DaveMcW/davemcw.github.io/releases/download/1.0/campsite-locator.apk)
 
 #### Reflection ####
 

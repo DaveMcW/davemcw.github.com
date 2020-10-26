@@ -79,7 +79,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         campsiteName = caller.getStringExtra("name");
         if (campsiteName == null) {
-            campsiteName = "Campsite";
+            campsiteName = "";
         }
     }
 
@@ -153,7 +153,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         // Add new marker
-        marker = mMap.addMarker(new MarkerOptions().position(point).title("Campsite"));
+        marker = mMap.addMarker(new MarkerOptions().position(point).title(campsiteName));
 
         // Convert latitude and longitude to address
         List<Address> addressList = null;

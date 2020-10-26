@@ -21,7 +21,7 @@ The final Android app package is available here: [campsite-locator.apk](https://
 
 #### Reflection ####
 
-Despite spending two 8-week semesters working on this Android app, there are many features that I have not had time to implement. For example images are still stored locally instead of in the remove database. There is very little automated testing. I estimate that adding full test coverage would double the time it took me to build the app. This helps me appreciate the large scope of a mobile application project.
+Despite spending two 8-week semesters working on this Android app, there are many features that I have not had time to implement. For example, images are still stored locally instead of in the remote database. There is very little automated testing. I estimate that adding full test coverage would double the time it took me to build the app. This helps me appreciate the large scope of a mobile application project.
 
 I am proud to have delivered a functioning a mobile app integrated with a remote database, within my 8 week course deadline. This demonstrates my ability to deliver value to stakeholders, in the context of Agile development.
 
